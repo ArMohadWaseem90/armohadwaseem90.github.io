@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ml">
 <head>
 <meta charset="utf-8">
@@ -41,4 +42,66 @@ h1{font-family:"Bungee",system-ui,sans-serif;font-weight:400;font-size:clamp(38p
 
 /* ---------- Projects ---------- */
 .projects{max-width:980px;margin:0 auto;padding:72px 20px 40px}
-.projects h2{font-family:"Bungee",system-ui,sans-serif;font-weight:400;font-size
+.projects h2{font-family:"Bungee",system-ui,sans-serif;font-weight:400;font-size:clamp(26px,7vw,40px);
+  color:var(--leaf);margin-bottom:6px}
+.projects>p{color:var(--moss);margin-bottom:32px}
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.card{background:var(--panel);border:1px solid var(--edge);border-left:5px solid var(--leaf);
+  padding:20px;display:flex;flex-direction:column;gap:10px;border-radius:4px}
+.card h3{font-size:20px;color:var(--ink)}
+.card p{color:var(--moss);flex:1}
+.card a{color:var(--leaf);font-weight:700;text-decoration:none}
+.card a:hover{text-decoration:underline}
+.empty{border:2px dashed var(--edge);padding:28px;color:var(--moss);text-align:center}
+
+footer{text-align:center;color:var(--moss);padding:36px 20px 48px;border-top:1px solid var(--edge);margin-top:40px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="dino">🦖</div>
+  <p class="welcome">Welcome to</p>
+  <h1>Dinos<br>Creation</h1>
+  <p class="tag">ഞാൻ ഉണ്ടാക്കുന്ന പ്രൊജക്ടുകൾ ഒരിടത്ത്.</p>
+  <a class="go" href="#projects">പ്രൊജക്ടുകൾ കാണുക</a>
+</header>
+
+<main class="projects" id="projects">
+  <h2>Projects</h2>
+  <p>എന്റെ ഏറ്റവും പുതിയ സൃഷ്ടികൾ</p>
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>© Dinos Creation</footer>
+
+<script>
+/* പുതിയ പ്രൊജക്ട് ചേർക്കാൻ: താഴെ ലിസ്റ്റിൽ ഒരു വരി കൂടി കൂട്ടിച്ചേർക്കുക.
+   title = പേര്, text = ചെറിയ വിവരണം, link = പ്രൊജക്ടിന്റെ ലിങ്ക് (ഇല്ലെങ്കിൽ "" ഇടുക) */
+const projects = [
+  { title: "ആദ്യ പ്രൊജക്ട്", text: "ഇവിടെ നിങ്ങളുടെ പ്രൊജക്ടിനെക്കുറിച്ച് എഴുതാം.", link: "" },
+  { title: "രണ്ടാമത്തെ പ്രൊജക്ട്", text: "ഇതും മാറ്റി എഴുതാം.", link: "" }
+];
+
+const grid = document.getElementById("grid");
+if (projects.length === 0) {
+  grid.innerHTML = '<div class="empty">പ്രൊജക്ടുകൾ ഉടൻ വരുന്നു.</div>';
+} else {
+  projects.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "card";
+    const h = document.createElement("h3"); h.textContent = p.title;
+    const t = document.createElement("p"); t.textContent = p.text;
+    card.append(h, t);
+    if (p.link) {
+      const a = document.createElement("a");
+      a.href = p.link; a.textContent = "തുറക്കുക"; a.target = "_blank"; a.rel = "noopener";
+      card.append(a);
+    }
+    grid.append(card);
+  });
+}
+</script>
+</body>
+</html>
