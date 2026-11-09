@@ -1,5 +1,101 @@
-body { font-family: sans-serif; text-align: center; background: #f0f8ff; }
-h1 { color: green; }
-button { font-size: 20px; padding: 10px 20px; }document.getElementById("btn").onclick = function () {
-  alert("സ്വാഗതം!");
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dino World</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#171a3a;--sky2:#2d3270;--sand:#e9c46a;--leaf:#5ee0a0;--ink:#fff8e7}
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;color:var(--ink);text-align:center;overflow:hidden;
+  font-family:"Press Start 2P",system-ui,sans-serif;
+  background:
+    radial-gradient(2px 2px at 20% 15%,#fff 50%,transparent 51%),
+    radial-gradient(2px 2px at 70% 25%,#fff 50%,transparent 51%),
+    radial-gradient(2px 2px at 40% 55%,#fff 50%,transparent 51%),
+    radial-gradient(2px 2px at 85% 60%,#fff 50%,transparent 51%),
+    linear-gradient(var(--sky),var(--sky2))}
+.screen{display:none;min-height:100vh;padding:24px 20px 140px;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.screen.on{display:flex}
+h1{font-size:clamp(22px,7vw,44px);line-height:1.5;color:var(--leaf);text-shadow:4px 4px 0 #000}
+h2{font-size:clamp(14px,4vw,20px);line-height:1.6;color:var(--sand)}
+.sub{font-family:system-ui,sans-serif;font-size:18px;line-height:1.6;max-width:30em}
+.bar{width:min(320px,80vw);height:26px;border:4px solid var(--ink);padding:3px}
+.bar i{display:block;height:100%;width:0;background:var(--leaf)}
+.btn{font:inherit;font-size:16px;padding:16px 26px;color:#171a3a;background:var(--sand);
+  border:0;box-shadow:0 6px 0 #9c7a24;cursor:pointer}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 #9c7a24}
+.blink{animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.menu{display:grid;gap:18px;width:min(340px,90vw)}
+#ground{position:fixed;left:0;right:0;bottom:0;height:90px;background:var(--sand);border-top:6px solid #9c7a24}
+#ground::before{content:"";position:absolute;inset:14px 0 0;
+  background:repeating-linear-gradient(90deg,#9c7a24 0 12px,transparent 12px 60px);
+  animation:run 1s linear infinite}
+@keyframes run{to{background-position-x:-60px}}
+#dino{position:fixed;left:14%;bottom:84px;font-size:56px;line-height:1;transform:scaleX(-1);
+  animation:step .35s steps(2) infinite}
+@keyframes step{50%{margin-bottom:4px}}
+#dino.jump{animation:jump .6s ease-out}
+@keyframes jump{50%{margin-bottom:120px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+
+<section id="loading" class="screen on">
+  <h2>LOADING...</h2>
+  <div class="bar"><i id="fill"></i></div>
+  <p class="sub" id="pct">0%</p>
+</section>
+
+<section id="title" class="screen">
+  <h1>DINO<br>WORLD</h1>
+  <p class="sub">എന്റെ സ്വന്തം വെബ്സൈറ്റിലേക്ക് സ്വാഗതം</p>
+  <button class="btn blink" id="start">START</button>
+</section>
+
+<section id="home" class="screen">
+  <h2>LEVEL 1</h2>
+  <p class="sub">ഒരു ഓപ്ഷൻ തിരഞ്ഞെടുക്കുക</p>
+  <div class="menu">
+    <button class="btn" data-msg="എന്നെക്കുറിച്ച് ഇവിടെ എഴുതാം">ABOUT</button>
+    <button class="btn" data-msg="ഗെയിമുകൾ ഉടൻ വരുന്നു">GAMES</button>
+    <button class="btn" data-msg="ബന്ധപ്പെടാനുള്ള വിവരം ഇവിടെ ചേർക്കാം">CONTACT</button>
+  </div>
+  <p class="sub" id="msg"></p>
+</section>
+
+<div id="dino">🦖</div>
+<div id="ground"></div>
+
+<script>
+const show = id => {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("on"));
+  document.getElementById(id).classList.add("on");
 };
+
+let n = 0;
+const timer = setInterval(() => {
+  n += Math.ceil(Math.random() * 7);
+  if (n >= 100) { n = 100; clearInterval(timer); setTimeout(() => show("title"), 400); }
+  document.getElementById("fill").style.width = n + "%";
+  document.getElementById("pct").textContent = n + "%";
+}, 120);
+
+document.getElementById("start").onclick = () => show("home");
+
+document.querySelectorAll(".menu .btn").forEach(b => {
+  b.onclick = () => { document.getElementById("msg").textContent = b.dataset.msg; };
+});
+
+const dino = document.getElementById("dino");
+document.body.addEventListener("click", () => {
+  dino.classList.remove("jump");
+  void dino.offsetWidth;
+  dino.classList.add("jump");
+});
+</script>
+</body>
+</html>
