@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,7 +29,7 @@ body{background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;line
 }
 .dino{
   width:min(300px,72vw);height:auto;display:block;
-  /* ചിത്രത്തിന്റെ താഴത്തെ അറ്റം ഇരുട്ടിലേക്ക് ലയിപ്പിക്കുന്നു */
+  /* fades the bottom edge of the image into the dark background */
   -webkit-mask-image:linear-gradient(to bottom,#000 68%,transparent 100%);
           mask-image:linear-gradient(to bottom,#000 68%,transparent 100%);
   filter:drop-shadow(0 0 22px rgba(47,220,122,.55)) saturate(.9) brightness(.92);
@@ -65,32 +65,32 @@ footer{text-align:center;color:var(--moss);padding:36px 20px 48px;border-top:1px
 <body>
 
 <header class="hero">
-  <img class="dino" src="dino.png" alt="പച്ച ഡൈനോസർ">
+  <img class="dino" src="dino.png" alt="Green cartoon dinosaur">
   <p class="welcome">Welcome to</p>
   <h1>Dinos<br>Creation</h1>
-  <p class="tag">ഞാൻ ഉണ്ടാക്കുന്ന പ്രൊജക്ടുകൾ ഒരിടത്ത്.</p>
-  <a class="go" href="#projects">പ്രൊജക്ടുകൾ കാണുക</a>
+  <p class="tag">All my projects in one place.</p>
+  <a class="go" href="#projects">View projects</a>
 </header>
 
 <main class="projects" id="projects">
   <h2>Projects</h2>
-  <p>എന്റെ ഏറ്റവും പുതിയ സൃഷ്ടികൾ</p>
+  <p>My latest creations</p>
   <div class="grid" id="grid"></div>
 </main>
 
 <footer>© Dinos Creation</footer>
 
 <script>
-/* പുതിയ പ്രൊജക്ട് ചേർക്കാൻ: താഴെ ലിസ്റ്റിൽ ഒരു വരി കൂടി കൂട്ടിച്ചേർക്കുക.
-   title = പേര്, text = ചെറിയ വിവരണം, link = പ്രൊജക്ടിന്റെ ലിങ്ക് (ഇല്ലെങ്കിൽ "" ഇടുക) */
+/* To add a project, add one more line to the list below.
+   title = name, text = short description, link = project link (use "" if none) */
 const projects = [
-  { title: "ആദ്യ പ്രൊജക്ട്", text: "ഇവിടെ നിങ്ങളുടെ പ്രൊജക്ടിനെക്കുറിച്ച് എഴുതാം.", link: "" },
-  { title: "രണ്ടാമത്തെ പ്രൊജക്ട്", text: "ഇതും മാറ്റി എഴുതാം.", link: "" }
+  { title: "First Project", text: "Write about your project here.", link: "" },
+  { title: "Second Project", text: "Replace this text with your own.", link: "" }
 ];
 
 const grid = document.getElementById("grid");
 if (projects.length === 0) {
-  grid.innerHTML = '<div class="empty">പ്രൊജക്ടുകൾ ഉടൻ വരുന്നു.</div>';
+  grid.innerHTML = '<div class="empty">Projects coming soon.</div>';
 } else {
   projects.forEach(p => {
     const card = document.createElement("div");
@@ -100,7 +100,7 @@ if (projects.length === 0) {
     card.append(h, t);
     if (p.link) {
       const a = document.createElement("a");
-      a.href = p.link; a.textContent = "തുറക്കുക"; a.target = "_blank"; a.rel = "noopener";
+      a.href = p.link; a.textContent = "Open"; a.target = "_blank"; a.rel = "noopener";
       card.append(a);
     }
     grid.append(card);
