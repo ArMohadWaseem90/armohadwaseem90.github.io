@@ -1,77 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dinos Creation</title>
+<meta name="description" content="Dinos Creation: games, websites, robotics, AI and 3D projects.">
+<meta name="theme-color" content="#030805">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#030805;--panel:#08150d;--edge:#174a2c;--leaf:#2fdc7a;--moss:#7bb98f;--ink:#e6f5ea}
+:root{--bg:#030805;--panel:#08150d;--edge:#174a2c;--leaf:#2fdc7a;--moss:#7bb98f;--ink:#e6f5ea;--glow:rgba(47,220,122,.26);--grid:rgba(47,220,122,.09);--onleaf:#030805}
+[data-theme="light"]{--bg:#f1faf4;--panel:#ffffff;--edge:#b5dcc2;--leaf:#0f7a3c;--moss:#3a6a4d;--ink:#0b1f14;--glow:rgba(15,122,60,.16);--grid:rgba(15,122,60,.10);--onleaf:#ffffff}
 *{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth;scroll-padding-top:64px}
-body{background:var(--bg);color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif;line-height:1.6}
+html{scroll-behavior:smooth;scroll-padding-top:64px;background:var(--bg)}
+body{color:var(--ink);font-family:"Chakra Petch",system-ui,sans-serif;line-height:1.6;transition:color .3s}
 h1,h2,h3,.logo{font-family:Orbitron,system-ui,sans-serif}
 a{color:inherit}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
 section{max-width:1040px;margin:0 auto;padding:80px 20px 20px}
-h2{font-size:clamp(22px,6vw,34px);color:var(--leaf);margin-bottom:8px;text-shadow:0 0 18px rgba(47,220,122,.4)}
-.lead{color:var(--moss);max-width:36em;margin-bottom:30px}
+h2{font-size:clamp(22px,6vw,34px);color:var(--leaf);margin-bottom:8px}
+.lead{color:var(--moss);max-width:36em;margin-bottom:28px}
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s,transform .7s}
+.reveal.in{opacity:1;transform:none}
 
-/* nav */
-nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:22px;padding:10px 18px;
-  background:rgba(3,8,5,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);overflow-x:auto;white-space:nowrap}
+nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:18px;padding:10px 18px;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--edge);overflow-x:auto;white-space:nowrap}
 .logo{display:flex;align-items:center;gap:8px;color:var(--leaf);font-weight:900;font-size:15px;text-decoration:none;margin-right:auto}
 .logo img{width:30px;height:30px;object-fit:contain}
-nav a.l{color:var(--moss);text-decoration:none;font-size:15px;transition:.2s}
+nav a.l{color:var(--moss);text-decoration:none;font-size:15px}
 nav a.l:hover{color:var(--leaf)}
+.ib{background:none;border:1px solid var(--edge);color:var(--leaf);font:inherit;font-size:14px;padding:4px 12px;cursor:pointer}
+.ib:hover{box-shadow:0 0 12px var(--glow)}
+#installBtn{display:none}
 
-/* hero */
-.hero{min-height:calc(100vh - 52px);max-width:none;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:16px;text-align:center;padding:40px 20px;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 50% 34%,rgba(47,220,122,.26),transparent 55%)}
-.hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:0;
-  background:linear-gradient(rgba(47,220,122,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(47,220,122,.09) 1px,transparent 1px);
-  background-size:44px 44px;animation:grid 6s linear infinite;
-  -webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%)}
+.hero{min-height:calc(100vh - 52px);max-width:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px 20px;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 34%,var(--glow),transparent 55%)}
+.hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:0;background:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:44px 44px;animation:grid 6s linear infinite;-webkit-mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%);mask-image:radial-gradient(circle at 50% 40%,#000,transparent 72%)}
 @keyframes grid{to{background-position:0 44px}}
 .hero>*{position:relative;z-index:1}
-.hero img{width:min(270px,64vw);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent);
-  filter:drop-shadow(0 0 22px rgba(47,220,122,.55)) brightness(.92)}
-.hero .kicker{color:var(--moss);letter-spacing:.14em;margin-top:-22px}
-h1{font-weight:900;font-size:clamp(36px,11vw,84px);line-height:1.05;color:var(--leaf);text-shadow:0 0 30px rgba(47,220,122,.55)}
-.hero .tag{color:var(--moss);max-width:28em;font-size:18px}
-.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:6px}
-.btn{padding:12px 26px;border:2px solid var(--leaf);color:var(--leaf);text-decoration:none;font-weight:600;transition:.2s;background:none;font:inherit;font-weight:600;cursor:pointer}
-.btn.fill{background:var(--leaf);color:var(--bg)}
-.btn:hover,.btn:focus-visible{box-shadow:0 0 22px rgba(47,220,122,.6);outline:none}
+.hero img{width:min(270px,64vw);-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent);filter:drop-shadow(0 0 22px var(--glow)) brightness(.95)}
+.kicker{color:var(--moss);letter-spacing:.14em;margin-top:-22px}
+h1{font-weight:900;font-size:clamp(36px,11vw,84px);line-height:1.05;color:var(--leaf);text-shadow:0 0 30px var(--glow)}
+.tag{color:var(--moss);font-size:18px;min-height:3.4em;max-width:26em}
+.tag::after{content:"|";margin-left:2px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn{padding:12px 26px;border:2px solid var(--leaf);color:var(--leaf);text-decoration:none;font:inherit;font-weight:600;background:none;cursor:pointer;transition:.2s}
+.btn.fill{background:var(--leaf);color:var(--onleaf)}
+.btn:hover,.btn:focus-visible{box-shadow:0 0 22px var(--glow);outline:none}
 
-/* HUD cards */
 .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
 .card{position:relative;background:var(--panel);border:1px solid var(--edge);padding:22px 20px;display:flex;flex-direction:column;gap:8px;text-align:left;color:inherit;font:inherit}
 .card::before,.card::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--leaf);transition:.25s}
 .card::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
 .card::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
 .card:hover::before,.card:hover::after{width:100%;height:100%;opacity:.35}
-.card h3{font-size:17px;color:var(--ink)}
+.card h3{font-size:17px}
 .card p{color:var(--moss);flex:1}
 .card .meta{font-size:13px;color:var(--leaf)}
-button.card{cursor:pointer}
-.card a.open{color:var(--leaf);font-weight:600;text-decoration:none}
-.card a.open:hover{text-decoration:underline}
+.card.click{cursor:pointer}
 
-/* brand */
-.brand p{color:var(--moss);max-width:40em;margin-bottom:14px;font-size:18px}
-.brand p b{color:var(--ink)}
-
-/* filters */
+.brand p{color:var(--moss);max-width:40em;font-size:18px}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+#q{flex:1;min-width:180px;padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
+#q:focus{outline:2px solid var(--leaf)}
 .chips{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px}
-.chip{padding:6px 16px;border:1px solid var(--edge);background:none;color:var(--moss);font:inherit;cursor:pointer;transition:.2s}
-.chip.on,.chip:hover{border-color:var(--leaf);color:var(--leaf);box-shadow:0 0 14px rgba(47,220,122,.3)}
+.chip{padding:6px 16px;border:1px solid var(--edge);background:none;color:var(--moss);font:inherit;cursor:pointer}
+.chip.on,.chip:hover{border-color:var(--leaf);color:var(--leaf);box-shadow:0 0 14px var(--glow)}
 
-footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:60px;border-top:1px solid var(--edge)}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto}}
+form{display:grid;gap:12px;max-width:520px}
+form input,form textarea{padding:10px 14px;background:var(--panel);border:1px solid var(--edge);color:var(--ink);font:inherit}
+form input:focus,form textarea:focus{outline:2px solid var(--leaf)}
+#status{min-height:1.6em;color:var(--leaf)}
+
+.stats{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+#likeBtn[disabled]{opacity:.75;cursor:default}
+footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:50px;border-top:1px solid var(--edge)}
+
+dialog{margin:auto;width:min(520px,92vw);background:var(--panel);color:var(--ink);border:1px solid var(--leaf);padding:26px 22px;box-shadow:0 0 40px var(--glow)}
+dialog::backdrop{background:rgba(0,0,0,.72)}
+dialog h3{font-size:22px;color:var(--leaf);margin:4px 0 10px}
+dialog img{width:100%;max-height:240px;object-fit:cover;margin-bottom:12px}
+dialog p{color:var(--moss);margin-bottom:18px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
 </head>
 <body>
+<canvas id="fx"></canvas>
 
 <nav>
   <a class="logo" href="#top"><img src="dino.png" alt="">DINOS CREATION</a>
@@ -79,6 +94,8 @@ footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:60p
   <a class="l" href="#divisions">Divisions</a>
   <a class="l" href="#projects">Projects</a>
   <a class="l" href="#contact">Contact</a>
+  <button class="ib" id="installBtn">Install app</button>
+  <button class="ib" id="themeBtn" aria-label="Switch dark or light mode">Light</button>
 </nav>
 
 <header class="hero" id="top">
@@ -106,25 +123,49 @@ footer{text-align:center;color:var(--moss);padding:40px 20px 50px;margin-top:60p
 
 <section id="projects">
   <h2>Projects</h2>
-  <p class="lead">Everything we have built so far.</p>
+  <p class="lead">Everything we have built so far. Tap a project for details.</p>
+  <div class="tools"><input id="q" type="search" placeholder="Search projects" aria-label="Search projects"></div>
   <div class="chips" id="chips"></div>
   <div class="grid" id="projGrid"></div>
 </section>
 
 <section id="contact">
   <h2>Contact</h2>
-  <p class="lead">Want to work with us or just say hi?</p>
-  <div class="btns" id="contactBtns" style="justify-content:flex-start"></div>
+  <p class="lead">Want to work with us or just say hi? Send a message.</p>
+  <form id="form">
+    <input name="name" placeholder="Your name" required>
+    <input name="email" type="email" placeholder="Your email" required>
+    <textarea name="message" rows="4" placeholder="Your message" required></textarea>
+    <button class="btn fill" type="submit">Send message</button>
+    <p id="status" role="status"></p>
+  </form>
 </section>
 
-<footer>© Dinos Creation</footer>
+<footer>
+  <div class="stats">
+    <span class="btn" id="visits">Visitors: ...</span>
+    <button class="btn" id="likeBtn">&#9829; Like <span id="likes">0</span></button>
+  </div>
+  &copy; Dinos Creation
+</footer>
+
+<dialog id="modal">
+  <img id="mImg" alt="" hidden>
+  <span class="meta" id="mDiv" style="color:var(--leaf)"></span>
+  <h3 id="mTitle"></h3>
+  <p id="mText"></p>
+  <div class="btns" style="justify-content:flex-start">
+    <a class="btn fill" id="mLink" target="_blank" rel="noopener">Open project</a>
+    <button class="btn" id="mClose">Close</button>
+  </div>
+</dialog>
 
 <script>
 /* ===== EDIT YOUR SITE HERE ===== */
 const site = {
-  tagline: "Games, websites and ideas, built from scratch.",
   about: "Dinos Creation is a creative studio run by one maker with big plans. We design games, build websites and test new ideas, one project at a time.",
-  /* name = division name, text = what it does */
+  /* lines that type out under the title */
+  typing: ["Games, websites and ideas, built from scratch.", "Robots, AI and 3D experiments.", "One maker. One project at a time."],
   divisions: [
     { name: "Games",    text: "Browser games and playable experiments." },
     { name: "Web",      text: "Websites and web apps for people and brands." },
@@ -135,54 +176,157 @@ const site = {
     { name: "Learn",    text: "Tutorials and guides to learn how things are made." },
     { name: "Labs",     text: "Early ideas and prototypes we are testing." }
   ],
-  /* division must match a division name above. link = "" if none yet */
+  /* division must match a division name above.
+     details = longer text for the popup (optional), image = picture file name (optional), link = "" if none */
   projects: [
-    { title: "Dinos Creation Website", division: "Web",   text: "This site. Built on a phone.", link: "" },
-    { title: "First Game",             division: "Games", text: "Coming soon.", link: "" },
-    { title: "Brand Kit",              division: "Design", text: "Colors, logo and style guide. In progress.", link: "" }
+    { title: "Dinos Creation Website", division: "Web", text: "This site. Built on a phone.", details: "The home of Dinos Creation, built with HTML, CSS and JavaScript and hosted free on GitHub Pages.", link: "" },
+    { title: "First Game", division: "Games", text: "Coming soon.", details: "Our first browser game is in the works.", link: "" },
+    { title: "Brand Kit", division: "Design", text: "Colors, logo and style guide. In progress.", details: "The colors, fonts and logo rules that keep every Dinos Creation project looking the same.", link: "" }
   ],
-  /* label = button text, link = URL */
-  contact: [
-    { label: "Email us", link: "mailto:yourname@example.com" }
-  ]
+  /* Contact form: sign up free at formspree.io, create a form, and paste its ID here (looks like "xyzabcde").
+     Until then the form opens the visitor's email app, using the email below. */
+  formspreeId: "",
+  email: "yourname@example.com",
+  /* any short unique text; it names your visitor and like counters */
+  counterNamespace: "dinos-creation-muhammedfinaz78"
 };
 /* ===== END OF EDITABLE PART ===== */
 
 const $ = id => document.getElementById(id);
-const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt) e.textContent = txt; return e; };
+const el = (t, c, x) => { const e = document.createElement(t); if (c) e.className = c; if (x) e.textContent = x; return e; };
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = { get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }, set(k,v){ try { localStorage.setItem(k,v); } catch(e){} } };
 
-$("tagline").textContent = site.tagline;
+/* ----- theme ----- */
+const root = document.documentElement;
+function setTheme(t){ root.dataset.theme = t; $("themeBtn").textContent = t === "dark" ? "Light" : "Dark"; store.set("theme", t); readColor();
+  document.querySelector('meta[name="theme-color"]').content = t === "dark" ? "#030805" : "#f1faf4"; }
+$("themeBtn").onclick = () => setTheme(root.dataset.theme === "dark" ? "light" : "dark");
+
+/* ----- particles ----- */
+const cv = $("fx"), cx = cv.getContext("2d");
+let W, H, dots = [], color = "#2fdc7a", ptr = { x: -999, y: -999 };
+function readColor(){ color = getComputedStyle(root).getPropertyValue("--leaf").trim() || color; }
+function resize(){ W = cv.width = innerWidth; H = cv.height = innerHeight;
+  dots = Array.from({ length: Math.min(70, Math.floor(W / 14)) }, () => ({ x: Math.random()*W, y: Math.random()*H, vx: (Math.random()-.5)*.5, vy: (Math.random()-.5)*.5 })); }
+function frame(){
+  cx.clearRect(0, 0, W, H); cx.fillStyle = color; cx.strokeStyle = color;
+  dots.forEach((d, i) => {
+    if (!reduce) { d.x += d.vx; d.y += d.vy; if (d.x<0||d.x>W) d.vx*=-1; if (d.y<0||d.y>H) d.vy*=-1; }
+    cx.globalAlpha = .7; cx.beginPath(); cx.arc(d.x, d.y, 1.8, 0, 6.3); cx.fill();
+    for (let j = i+1; j < dots.length; j++) { const o = dots[j], dist = Math.hypot(d.x-o.x, d.y-o.y);
+      if (dist < 110) { cx.globalAlpha = .22*(1-dist/110); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(o.x,o.y); cx.stroke(); } }
+    const pd = Math.hypot(d.x-ptr.x, d.y-ptr.y);
+    if (pd < 150) { cx.globalAlpha = .5*(1-pd/150); cx.beginPath(); cx.moveTo(d.x,d.y); cx.lineTo(ptr.x,ptr.y); cx.stroke(); }
+  });
+  if (!reduce) requestAnimationFrame(frame);
+}
+addEventListener("resize", resize);
+addEventListener("pointermove", e => { ptr.x = e.clientX; ptr.y = e.clientY; });
+
+/* ----- typing effect ----- */
+(function type(){
+  const out = $("tagline"); let i = 0, n = 0, del = false;
+  if (reduce) { out.textContent = site.typing[0]; return; }
+  (function tick(){
+    const s = site.typing[i];
+    n += del ? -1 : 1; out.textContent = s.slice(0, n);
+    let wait = del ? 25 : 55;
+    if (!del && n === s.length) { del = true; wait = 1600; }
+    else if (del && n === 0) { del = false; i = (i+1) % site.typing.length; wait = 400; }
+    setTimeout(tick, wait);
+  })();
+})();
+
+/* ----- content ----- */
 $("about").textContent = site.about;
+let divF = "All", query = "";
+const modal = $("modal");
+function openModal(p){
+  $("mDiv").textContent = p.division; $("mTitle").textContent = p.title; $("mText").textContent = p.details || p.text;
+  const img = $("mImg"); img.hidden = !p.image; if (p.image) { img.src = p.image; img.alt = p.title; }
+  const l = $("mLink"); l.hidden = !p.link; if (p.link) l.href = p.link;
+  modal.showModal();
+}
+$("mClose").onclick = () => modal.close();
+modal.addEventListener("click", e => { if (e.target === modal) modal.close(); });
 
-let current = "All";
-function renderProjects() {
+function renderProjects(){
   const g = $("projGrid"); g.textContent = "";
-  const list = site.projects.filter(p => current === "All" || p.division === current);
-  if (!list.length) { g.append(el("div", "card", "Nothing here yet. Coming soon.")); return; }
+  const q = query.trim().toLowerCase();
+  const list = site.projects.filter(p => (divF === "All" || p.division === divF) &&
+    (!q || (p.title + " " + p.text + " " + p.division).toLowerCase().includes(q)));
+  if (!list.length) { g.append(el("div", "card", "No projects found.")); return; }
   list.forEach(p => {
-    const c = el("div", "card");
+    const c = el("div", "card click"); c.tabIndex = 0; c.setAttribute("role", "button");
     c.append(el("span", "meta", p.division), el("h3", "", p.title), el("p", "", p.text));
-    if (p.link) { const a = el("a", "open", "Open"); a.href = p.link; a.target = "_blank"; a.rel = "noopener"; c.append(a); }
+    c.onclick = () => openModal(p);
+    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openModal(p); } };
     g.append(c);
   });
 }
-function renderChips() {
+function renderChips(){
   const box = $("chips"); box.textContent = "";
   ["All", ...site.divisions.map(d => d.name)].forEach(n => {
-    const b = el("button", "chip" + (n === current ? " on" : ""), n);
-    b.onclick = () => { current = n; renderChips(); renderProjects(); };
+    const b = el("button", "chip" + (n === divF ? " on" : ""), n);
+    b.onclick = () => { divF = n; renderChips(); renderProjects(); };
     box.append(b);
   });
 }
+$("q").oninput = e => { query = e.target.value; renderProjects(); };
 site.divisions.forEach(d => {
   const count = site.projects.filter(p => p.division === d.name).length;
-  const b = el("button", "card");
+  const b = el("button", "card click");
   b.append(el("span", "meta", count + (count === 1 ? " project" : " projects")), el("h3", "", d.name), el("p", "", d.text));
-  b.onclick = () => { current = d.name; renderChips(); renderProjects(); $("projects").scrollIntoView(); };
+  b.onclick = () => { divF = d.name; renderChips(); renderProjects(); $("projects").scrollIntoView(); };
   $("divGrid").append(b);
 });
-site.contact.forEach(c => { const a = el("a", "btn", c.label); a.href = c.link; $("contactBtns").append(a); });
 renderChips(); renderProjects();
+
+/* ----- scroll animation ----- */
+document.querySelectorAll("section > *").forEach(e => e.classList.add("reveal"));
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .12 });
+document.querySelectorAll(".reveal").forEach(e => io.observe(e));
+
+/* ----- contact form ----- */
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const f = e.target, d = Object.fromEntries(new FormData(f)), s = $("status");
+  if (!site.formspreeId) {
+    location.href = "mailto:" + site.email + "?subject=" + encodeURIComponent("Message from " + d.name) +
+      "&body=" + encodeURIComponent(d.message + "\n\n" + d.name + " (" + d.email + ")");
+    return;
+  }
+  s.textContent = "Sending...";
+  try {
+    const r = await fetch("https://formspree.io/f/" + site.formspreeId, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify(d) });
+    if (!r.ok) throw 0;
+    s.textContent = "Message sent. Thank you!"; f.reset();
+  } catch (err) { s.textContent = "Could not send. Please try again."; }
+});
+
+/* ----- visitor counter and likes (counterapi.dev) ----- */
+const api = async path => { const r = await fetch("https://api.counterapi.dev/v1/" + site.counterNamespace + "/" + path); const j = await r.json(); return j.count ?? j.Count; };
+(async () => {
+  try { const n = await api(store.get("visited") ? "visits/" : "visits/up"); store.set("visited", "1"); $("visits").textContent = "Visitors: " + n; }
+  catch (e) { $("visits").hidden = true; }
+  try { $("likes").textContent = await api("likes/"); } catch (e) {}
+  if (store.get("liked")) $("likeBtn").disabled = true;
+})();
+$("likeBtn").onclick = async () => {
+  if (store.get("liked")) return;
+  try { $("likes").textContent = await api("likes/up"); store.set("liked", "1"); $("likeBtn").disabled = true; } catch (e) {}
+};
+
+/* ----- installable app ----- */
+let deferred;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferred = e; $("installBtn").style.display = "inline-block"; });
+$("installBtn").onclick = async () => { if (!deferred) return; deferred.prompt(); await deferred.userChoice; deferred = null; $("installBtn").style.display = "none"; };
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+
+/* ----- start ----- */
+setTheme(store.get("theme") === "light" ? "light" : "dark");
+resize(); frame();
 </script>
 </body>
 </html>
